@@ -1,29 +1,43 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <router-view class="page"></router-view>
+    <tab-bar>
+      <tab-item v-for="tabItem in tabList" :key="tabItem.title" :info="tabItem"></tab-item>
+    </tab-bar>
+    <!-- <router-view name="kid"></router-view> -->
   </div>
 </template>
-
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+export default {
+  data() {
+    return {
+      tabList: [
+        { title: "首页", path: "/home", class: "wap-home" },
+        { title: "动态", path: "/news", class: "hot-o" },
+        { title: "消息", path: "/message", class: "chat-o" },
+        { title: "我", path: "/mine", class: "contact" }
+      ]
+    };
+  },
+  created() {
+    // this.$store.dispatch("getUser", "000");
   }
+};
+</script>
+<style lang="scss">
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: #f5f5f5;
+}
+.page {
+  position: absolute;
+  top: 0;
+  bottom: 49px;
+  width: 100%;
+  // background: orange;
 }
 </style>
