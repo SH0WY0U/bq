@@ -37,3 +37,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 6.启动项目指令：npm run www；
 7.项目ui框架统一使用vant（icon已全局引入）且已设置组件实现自动引入样式，使用时按需引入即可；
 8.所有ajax请求使用/api开头，且已设置全局代理该开头请求到http://localhost:9090，请自行配置相关服务器
+9.所有页面写在page文件夹对应文件夹下，各页面组件之于component，各页面路由之于router，各页面数据之于store，也是同理，各api请求也以/api/home/...这样形式，以免互相冲突
