@@ -22,11 +22,11 @@ export default {
   align-items: center;
 }
 .tab {
-  font-size: 0.12rem;
+  font-size: 12px;
   color: #999;
 }
 .tab .van-icon {
-  font-size: 0.24rem;
+  font-size: 24px;
 }
 .tab.router-link-active {
   color: #f1457c;
