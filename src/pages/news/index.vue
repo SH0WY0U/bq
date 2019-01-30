@@ -1,64 +1,36 @@
 <template>
   <div id="news">
-    <div class="new" :style="{backgroundImage: 'url('+bgpicurl+')', backgroundSize: 'cover'}">
+    <div class="new" :style="{backgroundImage: 'url('+header.bgpicurl+')', backgroundSize: 'cover'}">
       <header class="head">
         <h1>动态</h1>
         <van-icon class="cream" name="photograph" />
       </header>
-      <p class="name">{{name}}</p>
-      <img class="image" :src="headers">
+      <p class="name">{{header.name}}</p>
+      <img class="image" :src="header.header">
+      
     </div>
-    
+    <Main :data="header"/>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
+import Main from './main'
 export default {
-  data(){
-    return{
-      name:'',
-      headers:'',
-      bgpicurl:''
-    }
+  components:{
+    Main
   },
   created(){
-    const query = `
-        query Account {
-            account {
-                name
-                age
-                bgpicurl
-                header
-                firend
-            }
-        }
-        `
-    // const variables = {name: '邵桂英'}
-    console.log(query)
-    fetch('/api/news/test',{
-      method: "POST",
-      headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-          query: query,
-          // variables: variables
-      })
+      this.$store.dispatch("news/getnewsHeader"),
+      this.$store.dispatch("news/getnewsBody")
+      console.log(this.header)
+  },
+  computed:{
+    ...mapState({
+        header: state=>state.news.newsHeader,
+        body: state=>state.news.newsBody
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      this.name=data.data.account[1].name
-      this.headers=data.data.account[1].header
-      this.bgpicurl=data.data.account[1].bgpicurl
-  });
-    fetch('/api/news/test1')
-    .then(response => response.json())
-    .then(data=>{
-      console.log(data)
-    })
-  } 
+  }
 };
 </script>
 <style lang="scss" scoped>

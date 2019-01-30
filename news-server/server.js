@@ -4,8 +4,6 @@ const {buildSchema} = require('graphql');
 const grapqlHTTP = require('express-graphql');
 const mysql = require('mysql')
 
-const {mock,Random}= require('mockjs');
-
 
 var pool= mysql.createPool({
     connectionLimit: 10,
@@ -15,50 +13,35 @@ var pool= mysql.createPool({
     database: 'mysql'
 })
     
-
 const app = express();
-
-
-app.get('/api/news/test1', (req,res)=>{
-    let result = mock({
-        state:0,
-        message:'ok',
-        data:{
-            "list|5-15":[
-                {
-                    'id|+1':123113,
-                    url:"@url('http')",
-                    name:"@cname",
-                    bigpicurl: "@image('376x224','@color')" ,
-                    "smallimg|2-9": ["@image('750x652','@color')"],
-                    age:"@integer( 15, 99 )",
-                    "type|1":[1,2,3],
-                    title:"@ctitle(5,15)"
-                }
-            ]
-        }
-    })
-    res.json(result)
-})
 
 const schema = buildSchema(`
     type Account {
+        id:Int
         name: String
         age: Int
         bgpicurl: String
         header: String
         firend: String
     }
+    type Account2 {
+        userid: Int
+        type: String
+        url: String
+        bigimg: String
+        smallimg: String
+        title: String
+    }
     type Query {
-        account: [Account]
+        account(id:Int): [Account]
+        account2(userid:Int):[Account2]
     }
 `)
 
 const root = {
-    account({ name}){
+    account({id}){
         return new Promise((resolve,reject)=>{
-            pool.query('select name, age, bgpicurl, header, firend from user_info', (err, results)=> {
-                console.log(results)
+            pool.query(`select id, name, age, bgpicurl, header, firend from user_info where id=123114`, (err, results)=> {
                 if(err) {
                     console.log('出错了' + err.message);
                     return;
@@ -67,6 +50,7 @@ const root = {
                 for(let i=0;i<results.length;i++) {
                     arr.push({
                         name: results[i].name,
+                        id:results[i].id,
                         age: results[i].age,
                         bgpicurl: results[i].bgpicurl,
                         header: results[i].header,
@@ -76,11 +60,38 @@ const root = {
                 resolve(arr);
             })
         })
+    },
+    account2({userid}){
+        return new Promise((resolve,reject)=>{
+            pool.query(`select userid, type, url, bigimg, smallimg, title from news_${userid}`,(err,results)=>{
+                if(err) {
+                    console.log('出错了' + err.message);
+                    return;
+                }
+                const arr = [];
+                for(let i=0;i<results.length;i++){
+                    arr.push({
+                        userid:results[i].userid,
+                        type:results[i].type,
+                        url:results[i].url,
+                        bigimg:results[i].bigimg,
+                        smallimg:results[i].smallimg,
+                        title:results[i].title
+                    })
+                    resolve(arr)
+                }
+            })
+        })
     }
 }
 
 
 app.use('/api/news/test',grapqlHTTP({
+    schema:schema,
+    rootValue:root,
+    graphiql:true
+}))
+app.use('/api/news/qq',grapqlHTTP({
     schema:schema,
     rootValue:root,
     graphiql:true
