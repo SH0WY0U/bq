@@ -10,6 +10,11 @@ const mutations ={
         state.newsHeader=params.data.account[0]
     },
     setBody(state,params){
+        for(let i=0;i<params.data.account2.length;i++){
+            if(params.data.account2[i].type==3){
+                params.data.account2[i].smallimg=params.data.account2[i].smallimg.split(',');
+            }
+        }
         state.newsBody=params.data.account2
     }
 }
@@ -45,7 +50,7 @@ const actions={
         
     },
     // 请求动态页主体数据
-    async getnewsBody({commit}){
+    async getnewsBody({commit},{id}){
         const query2 = `
         query Account2($userid:Int) {
           account2(userid:$userid){
@@ -55,10 +60,12 @@ const actions={
             bigimg
             smallimg
             title
+            name
+            header
           }
         }
     `
-        const variables2 = {userid: 123121}
+        const variables2 = {userid: id}
         let newsBody = await fetchPost('/api/news/qq',{
             method: "POST",
             headers: {

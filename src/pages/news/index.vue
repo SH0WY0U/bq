@@ -9,27 +9,27 @@
       <img class="image" :src="header.header">
       
     </div>
-    <Main :data="header"/>
+    <maintest v-if='header' :data="header"/>
   </div>
 </template>
 
 <script>
 import {mapState} from 'vuex'
-import Main from './main'
+import Maintest from './main'
 export default {
   components:{
-    Main
+    Maintest
   },
   created(){
-      this.$store.dispatch("news/getnewsHeader"),
-      this.$store.dispatch("news/getnewsBody")
-      console.log(this.header)
+      this.$store.dispatch("news/getnewsHeader")      
   },
   computed:{
     ...mapState({
-        header: state=>state.news.newsHeader,
-        body: state=>state.news.newsBody
+        header: state=>state.news.newsHeader
     })
+  },
+  mounted(){
+    console.log(this.header)
   }
 };
 </script>

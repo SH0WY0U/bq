@@ -31,6 +31,8 @@ const schema = buildSchema(`
         bigimg: String
         smallimg: String
         title: String
+        name: String
+        header: String
     }
     type Query {
         account(id:Int): [Account]
@@ -63,7 +65,7 @@ const root = {
     },
     account2({userid}){
         return new Promise((resolve,reject)=>{
-            pool.query(`select userid, type, url, bigimg, smallimg, title from news_${userid}`,(err,results)=>{
+            pool.query(`select userid, type, url, bigimg, smallimg, title, name, header from news_zong where userid=${userid}`,(err,results)=>{
                 if(err) {
                     console.log('出错了' + err.message);
                     return;
@@ -76,10 +78,12 @@ const root = {
                         url:results[i].url,
                         bigimg:results[i].bigimg,
                         smallimg:results[i].smallimg,
-                        title:results[i].title
+                        title:results[i].title,
+                        name: results[i].name,
+                        header: results[i].header
                     })
-                    resolve(arr)
                 }
+                resolve(arr)
             })
         })
     }

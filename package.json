@@ -28,10 +28,17 @@
   "postcss": {
     "plugins": {
       "autoprefixer": {},
-      "postcss-pxtorem":{
-        "rootValue":75,
-        "propList":["*"],
-        "selectorBlackList":[".border",".page",".tab",".tabs"]
+      "postcss-pxtorem": {
+        "rootValue": 75,
+        "propList": [
+          "*"
+        ],
+        "selectorBlackList": [
+          ".border",
+          ".page",
+          ".tab",
+          ".tabs"
+        ]
       }
     }
   },
