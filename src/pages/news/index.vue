@@ -1,16 +1,18 @@
 <template>
+<scroller>
   <div id="news">
-    <div class="new" :style="{backgroundImage: 'url('+header.bgpicurl+')', backgroundSize: 'cover'}">
+    <div class="new" :style="{backgroundImage: 'url('+headerdata.bgpicurl+')', backgroundSize: 'cover'}">
       <header class="head">
         <h1>动态</h1>
-        <van-icon class="cream" name="photograph" />
+        <van-icon class="cream" name="photograph" @click="()=>{this.$router.push('./news/public')}"/>
       </header>
-      <p class="name">{{header.name}}</p>
-      <img class="image" :src="header.header">
+      <p class="name">{{headerdata.name}}</p>
+      <img class="image" :src="headerdata.header">
       
     </div>
-    <maintest v-if='header' :data="header"/>
+    <maintest v-if='headerdata' :data="headerdata"/>
   </div>
+</scroller>
 </template>
 
 <script>
@@ -25,11 +27,11 @@ export default {
   },
   computed:{
     ...mapState({
-        header: state=>state.news.newsHeader
+        headerdata: state=>state.news.newsHeader
     })
   },
   mounted(){
-    console.log(this.header)
+
   }
 };
 </script>

@@ -83,7 +83,7 @@ export default {
       probeType: 3,
       ...this.settings
     });
-    点击前自动刷新视图
+    //点击前自动刷新视图
     this.$scroll.on("beforeScrollStart", () => {
       this.$scroll.refresh();
     });
