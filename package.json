@@ -37,7 +37,8 @@
           ".border",
           ".page",
           ".tab",
-          ".tabs"
+          ".tabs",
+          ".van-nav-bar"
         ]
       }
     }
